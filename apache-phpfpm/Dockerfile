@@ -2,12 +2,12 @@ FROM ubuntu:14.04
 MAINTAINER Yusuf HASAN MIYAN, yusuf.hasanmiyan@gmail.com
 
 # Run with --build-arg au=1 to get AU apt sources
-ARG au=0
+#ARG au=0
 # Run with --build-arg drupal=1 to add the apache vhost config for Drupal
-ARG drupal
+#ARG drupal
 
 # Replace sources for AUS
-RUN if [ $au -eq 1 ]; then sed -i 's/archive.ubuntu.com/au.archive.ubuntu.com/g' /etc/apt/sources.list; fi
+#RUN if [ $au -eq 1 ]; then sed -i 's/archive.ubuntu.com/au.archive.ubuntu.com/g' /etc/apt/sources.list; fi
 
 RUN apt-get update
 RUN apt-get install -qy apache2 php5-fpm supervisor libapache2-mod-rpaf
@@ -24,7 +24,7 @@ RUN php5enmod mcrypt
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD apache_phpfpm.conf /etc/apache2/conf-enabled/apache_phpfpm.conf
-ADD apache_drupal.conf ${drupal:+/etc/apache2/conf-enabled/apache_drupal.conf}
+#ADD apache_drupal.conf ${drupal:+/etc/apache2/conf-enabled/apache_drupal.conf}
 
 EXPOSE 80
 CMD ["/usr/bin/supervisord"]
