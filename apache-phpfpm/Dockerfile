@@ -20,6 +20,8 @@ RUN rm -r /var/www/html/*
 RUN mkdir -p /var/log/supervisor
 # Default timezone
 RUN sed -i 's/;date\.timezone.*/date.timezone = Australia\/Sydney/g' /etc/php5/fpm/php.ini
+# Set up tcp/ip instead of socket
+RUN sed -i s'/listen = \/var\/run\/php5-fpm.sock/listen = 127.0.0.1:9000/' /etc/php5/fpm/pool.d/www.conf
 RUN php5enmod mcrypt
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
