@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-MAINTAINER Yusuf HASAN MIYAN, yusuf.hasanmiyan@gmail.com
+MAINTAINER Yusuf HASAN MIYAN <yusuf.hasanmiyan@gmail.com>
 
 # Run with --build-arg au=1 to get AU apt sources
 #ARG au=0
