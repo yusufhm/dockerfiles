@@ -8,6 +8,7 @@ MAINTAINER Yusuf HASAN MIYAN <yusuf.hasanmiyan@gmail.com>
 
 # Replace sources for AUS
 RUN sed -i 's/archive.ubuntu.com/au.archive.ubuntu.com/g' /etc/apt/sources.list
+RUN echo 'Australia/Sydney' > /etc/timezone
 
 RUN apt-get update
 RUN apt-get install -qy apache2 php5-fpm supervisor libapache2-mod-rpaf
