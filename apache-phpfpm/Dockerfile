@@ -11,10 +11,15 @@ RUN sed -i 's/archive.ubuntu.com/au.archive.ubuntu.com/g' /etc/apt/sources.list
 RUN echo 'Australia/Sydney' > /etc/timezone
 RUN cp /usr/share/zoneinfo/Australia/Sydney /etc/localtime
 
+# Add php56 repo
 RUN apt-get update
-RUN apt-get install -qy apache2 php5-fpm supervisor libapache2-mod-rpaf mariadb-client
+RUN apt-get install -qy software-properties-common python-software-properties
+RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
+
+RUN apt-get update
+RUN apt-get install -qy python-software-properties apache2 php5.6-fpm supervisor libapache2-mod-rpaf mariadb-client
 # Common PHP modules
-RUN apt-get install -qy php5-cgi php5-mysql php5-gd php5-curl php5-cli php5-memcache php5-mcrypt
+RUN apt-get install -qy php5.6-cgi php5.6-mysql php5.6-gd php5.6-curl php5.6-cli php5.6-memcache php5.6-mcrypt
 
 RUN a2enmod expires rewrite headers proxy_fcgi
 RUN rm -r /var/www/html/*
