@@ -25,6 +25,7 @@ RUN a2enmod expires rewrite headers proxy_fcgi
 RUN rm -r /var/www/html/*
 
 RUN mkdir -p /var/log/supervisor
+RUN mkdir /run/php
 # Default timezone
 RUN sed -i 's/;date\.timezone.*/date.timezone = Australia\/Sydney/g' /etc/php/5.6/fpm/php.ini
 # Set up tcp/ip instead of socket
