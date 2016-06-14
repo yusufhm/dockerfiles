@@ -29,7 +29,7 @@ RUN mkdir /run/php
 # Default timezone
 RUN sed -i 's/;date\.timezone.*/date.timezone = Australia\/Sydney/g' /etc/php/5.6/fpm/php.ini
 # Set up tcp/ip instead of socket
-RUN sed -i s'/listen = \/var\/run\/php5-fpm.sock/listen = 127.0.0.1:9000/' /etc/php/5.6/fpm/pool.d/www.conf
+RUN sed -i s'/listen = \/run\/php\/php5.6-fpm.sock/listen = 127.0.0.1:9000/' /etc/php/5.6/fpm/pool.d/www.conf
 RUN phpenmod mcrypt
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
