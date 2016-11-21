@@ -7,26 +7,42 @@ MAINTAINER Yusuf HASAN MIYAN <yusuf.hasanmiyan@gmail.com>
 #ARG drupal
 
 # Replace sources for AUS
-#RUN if [ $au -eq 1 ]; then sed -i 's/archive.ubuntu.com/au.archive.ubuntu.com/g' /etc/apt/sources.list; fi
+RUN sed -i 's/archive.ubuntu.com/au.archive.ubuntu.com/g' /etc/apt/sources.list
+RUN echo 'Australia/Sydney' > /etc/timezone
+RUN cp /usr/share/zoneinfo/Australia/Sydney /etc/localtime
+
+# Add php56 repo
+RUN apt-get update
+RUN apt-get install -qy software-properties-common python-software-properties
+RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
 
 RUN apt-get update
-RUN apt-get install -qy apache2 php5-fpm supervisor libapache2-mod-rpaf
+RUN apt-get install -qy python-software-properties apache2 php5.6-fpm supervisor libapache2-mod-rpaf mariadb-client
 # Common PHP modules
-RUN apt-get install -qy php5-cgi php5-mysql php5-gd php5-curl php5-cli php5-memcache php5-mcrypt
+RUN apt-get install -qy php5.6-cgi php5.6-mysql php5.6-gd php5.6-curl php5.6-cli php5.6-memcache php5.6-mcrypt php5.6-xml
 
 RUN a2enmod expires rewrite headers proxy_fcgi
 RUN rm -r /var/www/html/*
 
 RUN mkdir -p /var/log/supervisor
-# Default timezone
-RUN sed -i 's/;date\.timezone.*/date.timezone = Australia\/Sydney/g' /etc/php5/fpm/php.ini
-# Set up tcp/ip instead of socket
-RUN sed -i s'/listen = \/var\/run\/php5-fpm.sock/listen = 127.0.0.1:9000/' /etc/php5/fpm/pool.d/www.conf
-RUN php5enmod mcrypt
+RUN mkdir /run/php
+# Set default timezone.
+RUN sed -i 's/;date\.timezone.*/date.timezone = Australia\/Sydney/g' /etc/php/5.6/fpm/php.ini
+# Increase upload & post limits.
+RUN sed -i 's/;upload_max_filesize.*/upload_max_filesize = 15M/g' /etc/php/5.6/fpm/php.ini
+RUN sed -i 's/;post_max_size.*/post_max_size = 15M/g' /etc/php/5.6/fpm/php.ini
+# Set up tcp/ip instead of socket.
+RUN sed -i s'/listen = \/run\/php\/php5.6-fpm.sock/listen = 127.0.0.1:9000/' /etc/php/5.6/fpm/pool.d/www.conf
+RUN phpenmod mcrypt
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD apache_phpfpm.conf /etc/apache2/conf-enabled/apache_phpfpm.conf
-#ADD apache_drupal.conf ${drupal:+/etc/apache2/conf-enabled/apache_drupal.conf}
+ADD apache_drupal.conf /etc/apache2/conf-enabled/apache_drupal.conf
+
+# Install Drush
+RUN php -r "readfile('http://files.drush.org/drush.phar');" > /usr/local/bin/drush
+RUN chmod +x /usr/local/bin/drush
+RUN drush init -y
 
 EXPOSE 80
 CMD ["/usr/bin/supervisord"]
