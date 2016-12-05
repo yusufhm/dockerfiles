@@ -3,7 +3,7 @@ MAINTAINER Yusuf HASAN MIYAN <yusuf.hasanmiyan@gmail.com>
 
 # Install php CLI
 RUN apt-get update
-RUN apt-get install -qy php-cli php-xml php-curl
+RUN apt-get install -qy php-cli php-xml php-curl php-mbstring
 
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
