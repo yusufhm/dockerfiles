@@ -17,7 +17,7 @@ RUN apt-get install -qy software-properties-common python-software-properties
 RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
 
 RUN apt-get update
-RUN apt-get install -qy python-software-properties apache2 php5.6-fpm supervisor libapache2-mod-rpaf mariadb-client
+RUN apt-get install -qy python-software-properties apache2 php5.6-fpm supervisor libapache2-mod-rpaf mariadb-client vim
 # Common PHP modules
 RUN apt-get install -qy php5.6-cgi php5.6-mysql php5.6-gd php5.6-curl php5.6-cli php5.6-memcache php5.6-mcrypt php5.6-xml
 
@@ -38,6 +38,9 @@ RUN phpenmod mcrypt
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD apache_phpfpm.conf /etc/apache2/conf-enabled/apache_phpfpm.conf
 ADD apache_drupal.conf /etc/apache2/conf-enabled/apache_drupal.conf
+RUN rm /etc/apache2/conf-enabled/other-vhosts-access-log.conf
+RUN ln -sf /proc/self/fd/1 /var/log/apache2/error.log
+ADD php-fpm.conf /etc/php/5.6/fpm/php-fpm.conf
 
 # Install Drush
 RUN php -r "readfile('http://files.drush.org/drush.phar');" > /usr/local/bin/drush
