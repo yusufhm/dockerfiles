@@ -2,7 +2,7 @@ FROM yusufhm/composer
 MAINTAINER Yusuf HASAN MIYAN <yusuf.hasanmiyan@gmail.com>
 
 # Install drush
-RUN composer global require drush/drush
+RUN composer global require drush/drush consolidation/robo
 RUN mkdir -p /root/.acquia /root/.drush
 
 ADD acquiacloud/.drush/acapi.drush.inc /root/.drush/acapi.drush.inc
