@@ -5,6 +5,8 @@ MAINTAINER Yusuf HASAN MIYAN <yusuf.hasanmiyan@gmail.com>
 RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
 RUN apt-get update
 RUN apt-get install -qy php7.1-cli php7.1-xml php7.1-curl php7.1-mbstring npm nodejs
+RUN npm install -g grunt-cli
+RUN ln -s /usr/bin/nodejs /usr/bin/node
 
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
