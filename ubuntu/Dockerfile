@@ -8,6 +8,8 @@ RUN sed -i 's/archive.ubuntu.com/au.archive.ubuntu.com/g' /etc/apt/sources.list
 
 RUN apt-get update
 RUN apt-get install -qy software-properties-common python-software-properties aptitude git ssh curl zip unzip tzdata
+RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
+RUN apt-get update
 RUN aptitude safe-upgrade -y
 
 # Set timezone
